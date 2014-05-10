@@ -101,7 +101,7 @@ let s:keymaps = [
     \ ['togglesort', 's'],
     \ ['zoomwin',    'x'],
     \ ['close',      'q'],
-    \ ['help',       ['<F1>', '?']],
+    \ ['help',       '<F1>'],
 \ ]
 
 for [map, key] in s:keymaps
@@ -116,18 +116,29 @@ augroup TagbarSession
 augroup END
 
 " Commands {{{1
-command! -nargs=0 Tagbar              call tagbar#ToggleWindow()
-command! -nargs=0 TagbarToggle        call tagbar#ToggleWindow()
-command! -nargs=? TagbarOpen          call tagbar#OpenWindow(<f-args>)
-command! -nargs=0 TagbarOpenAutoClose call tagbar#OpenWindow('fcj')
-command! -nargs=0 TagbarClose         call tagbar#CloseWindow()
-command! -nargs=1 -bang TagbarSetFoldlevel  call tagbar#SetFoldLevel(<args>, <bang>0)
-command! -nargs=0 TagbarShowTag       call tagbar#highlighttag(1, 1)
-command! -nargs=? TagbarCurrentTag    echo tagbar#currenttag('%s', 'No current tag', <f-args>)
-command! -nargs=1 TagbarGetTypeConfig call tagbar#gettypeconfig(<f-args>)
-command! -nargs=? TagbarDebug         call tagbar#StartDebug(<f-args>)
-command! -nargs=0 TagbarDebugEnd      call tagbar#StopDebug()
-command! -nargs=0 TagbarTogglePause   call tagbar#toggle_pause()
+func! TagbarInit()
+    command! -nargs=0 Tagbar              call tagbar#ToggleWindow()
+    command! -nargs=0 TagbarToggle        call tagbar#ToggleWindow()
+    command! -nargs=? TagbarOpen          call tagbar#OpenWindow(<f-args>)
+    command! -nargs=0 TagbarOpenAutoClose call tagbar#OpenWindow('fcj')
+    command! -nargs=0 TagbarClose         call tagbar#CloseWindow()
+    command! -nargs=1 -bang TagbarSetFoldlevel  call tagbar#SetFoldLevel(<args>, <bang>0)
+    command! -nargs=0 TagbarShowTag       call tagbar#highlighttag(1, 1)
+    command! -nargs=? TagbarCurrentTag    echo tagbar#currenttag('%s', 'No current tag', <f-args>)
+    command! -nargs=1 TagbarGetTypeConfig call tagbar#gettypeconfig(<f-args>)
+    command! -nargs=? TagbarDebug         call tagbar#StartDebug(<f-args>)
+    command! -nargs=0 TagbarDebugEnd      call tagbar#StopDebug()
+    command! -nargs=0 TagbarTogglePause   call tagbar#toggle_pause()
+    let g:initialized_tagbar = 1
+endfunc
+
+func! s:TagbarToggle()
+    if !exists('g:initialized_tagbar')
+        call TagbarInit()
+    endif
+    call tagbar#ToggleWindow()
+endfunc
+command -nargs=0 TagbarToggle call <SID>TagbarToggle()
 
 " Modeline {{{1
 " vim: ts=8 sw=4 sts=4 et foldenable foldmethod=marker foldcolumn=1

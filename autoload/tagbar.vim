@@ -3517,7 +3517,11 @@ function! s:ExecuteCtags(ctags_cmd) abort
         call s:debug(v:statusmsg)
         redraw!
     else
-        let ctags_output = system(a:ctags_cmd)
+        if has("win16") || has("win32") || has("win64")
+            let ctags_output = join(xolox#misc#os#exec({'command': a:ctags_cmd})['stdout'],"\n")
+        else
+            let ctags_output = system(a:ctags_cmd)
+        endif
     endif
 
     if &shell =~ 'cmd\.exe'
