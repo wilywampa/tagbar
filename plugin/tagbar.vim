@@ -87,8 +87,8 @@ let s:keymaps = [
     \ ['jump',          '<CR>'],
     \ ['preview',       'p'],
     \ ['previewwin',    'P'],
-    \ ['nexttag',       '<C-N>'],
-    \ ['prevtag',       '<C-P>'],
+    \ ['nexttag',       ['<C-N>', 'zj']],
+    \ ['prevtag',       ['<C-P>', 'zk']],
     \ ['showproto',     '<Space>'],
     \ ['hidenonpublic', 'v'],
     \
