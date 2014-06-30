@@ -2946,6 +2946,10 @@ function! s:JumpToTag(stay_in_tagbar) abort
     let autoclose = w:autoclose
 
     if empty(taginfo) || !taginfo.isNormalTag()
+        " Make jump action toggle fold if cursor is not on a tag
+        if a:stay_in_tagbar == 0
+            call <SID>ToggleFold()
+        endif
         return
     endif
 
