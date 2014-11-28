@@ -110,7 +110,7 @@ let s:keymaps = [
     \ ['togglesort',      's'],
     \ ['toggleautoclose', 'c'],
     \ ['zoomwin',         'x'],
-    \ ['close',           'q'],
+    \ ['close',           ['q', 'Q']],
     \ ['help',            '<F1>'],
 \ ]
 
