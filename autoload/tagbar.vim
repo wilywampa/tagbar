@@ -997,7 +997,7 @@ function! s:CreateAutocommands() abort
         endif
 
         autocmd WinEnter * nested call s:QuitIfOnlyWindow()
-        autocmd WinEnter * if bufwinnr('__Tagbar__') == -1 |
+        autocmd WinEnter * silent! if bufwinnr('__Tagbar__') == -1 |
                          \     call s:ShrinkIfExpanded() |
                          \ endif
 
@@ -3441,7 +3441,8 @@ function! s:AutoUpdate(fname, force) abort
 
     " Display the tagbar content if the tags have been updated or a different
     " file is being displayed
-    if bufwinnr('__Tagbar__') != -1 && !s:paused &&
+    silent! let tagbarwinnr = bufwinnr('__Tagbar__')
+    if tagbarwinnr != -1 && !s:paused &&
      \ (s:new_window || updated ||
       \ (!empty(s:known_files.getCurrent(0)) &&
        \ a:fname != s:known_files.getCurrent(0).fpath))
@@ -3890,7 +3891,7 @@ endfunction
 
 " s:QuitIfOnlyWindow() {{{2
 function! s:QuitIfOnlyWindow() abort
-    let tagbarwinnr = bufwinnr('__Tagbar__')
+    silent! let tagbarwinnr = bufwinnr('__Tagbar__')
     if tagbarwinnr == -1
         return
     endif
@@ -4062,6 +4063,7 @@ endfunction
 
 " Wrappers {{{2
 function! tagbar#ToggleWindow() abort
+    if exists('s:tagbar_qf_active') | unlet s:tagbar_qf_active | endif
     call s:ToggleWindow()
 endfunction
 
