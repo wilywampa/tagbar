@@ -2832,7 +2832,7 @@ endfunction
 " s:PrintHelp() {{{2
 function! s:PrintHelp() abort
     if !g:tagbar_compact && s:short_help
-        silent 0put ='\" Press <F1> for help'
+        silent 0put ='\" Press ' . s:get_map_str('help') . ' for help'
         silent  put _
     elseif !s:short_help
         silent 0put ='\" Tagbar keybindings'
@@ -3898,7 +3898,7 @@ function! s:QuitIfOnlyWindow() abort
     endif
 
     let curwinnr = winnr()
-    let prevwinnr = winnr('#')
+    let prevwinnr = winnr('#') == 0 ? curwinnr : winnr('#')
     call s:goto_win(tagbarwinnr, 1)
 
     " Check if there is more than one window
